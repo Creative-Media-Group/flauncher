@@ -73,27 +73,36 @@ class FLauncherApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) =>
-                  SettingsService(_sharedPreferences, _firebaseCrashlytics, _firebaseAnalytics, _firebaseRemoteConfig),
+              create: (_) => SettingsService(
+                  _sharedPreferences,
+                  _firebaseCrashlytics,
+                  _firebaseAnalytics,
+                  _firebaseRemoteConfig),
               lazy: false),
-          ChangeNotifierProvider(create: (_) => AppsService(_fLauncherChannel, _fLauncherDatabase)),
+          ChangeNotifierProvider(
+              create: (_) =>
+                  AppsService(_fLauncherChannel, _fLauncherDatabase)),
           ChangeNotifierProxyProvider<SettingsService, WallpaperService>(
-              create: (_) => WallpaperService(_imagePicker, _fLauncherChannel, _unsplashService),
-              update: (_, settingsService, wallpaperService) => wallpaperService!..settingsService = settingsService),
+              create: (_) => WallpaperService(
+                  _imagePicker, _fLauncherChannel, _unsplashService),
+              update: (_, settingsService, wallpaperService) =>
+                  wallpaperService!..settingsService = settingsService),
           Provider<TickerModel>(create: (context) => TickerModel(null))
         ],
         child: MaterialApp(
           shortcuts: {
             ...WidgetsApp.defaultShortcuts,
             SingleActivator(LogicalKeyboardKey.select): ActivateIntent(),
-            SingleActivator(LogicalKeyboardKey.gameButtonB): PrioritizedIntents(orderedIntents: [
+            SingleActivator(LogicalKeyboardKey.gameButtonB):
+                PrioritizedIntents(orderedIntents: [
               DismissIntent(),
               BackIntent(),
             ]),
           },
           actions: {
             ...WidgetsApp.defaultActions,
-            DirectionalFocusIntent: SoundFeedbackDirectionalFocusAction(context),
+            DirectionalFocusIntent:
+                SoundFeedbackDirectionalFocusAction(context),
           },
           title: 'FLauncher',
           theme: ThemeData(
@@ -107,11 +116,14 @@ class FLauncherApp extends StatelessWidget {
             // ignore: deprecated_member_use
             backgroundColor: _swatch[400],
             scaffoldBackgroundColor: _swatch[400],
-            textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: Colors.white)),
-            appBarTheme: AppBarTheme(elevation: 0, backgroundColor: Colors.transparent),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(foregroundColor: Colors.white)),
+            appBarTheme:
+                AppBarTheme(elevation: 0, backgroundColor: Colors.transparent),
             typography: Typography.material2018(),
             inputDecorationTheme: InputDecorationTheme(
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white)),
               labelStyle: Typography.material2018().white.bodyMedium,
             ),
             textSelectionTheme: TextSelectionThemeData(
@@ -129,7 +141,9 @@ class FLauncherApp extends StatelessWidget {
                 }
                 return shouldPop;
               },
-              child: Actions(actions: {BackIntent: BackAction(context, systemNavigator: true)}, child: FLauncher()),
+              child: Actions(actions: {
+                BackIntent: BackAction(context, systemNavigator: true)
+              }, child: FLauncher()),
             ),
           ),
         ),
