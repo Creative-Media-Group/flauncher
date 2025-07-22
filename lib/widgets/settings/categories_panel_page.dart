@@ -37,7 +37,11 @@ class CategoriesPanelPage extends StatelessWidget {
             builder: (_, categories, __) => Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  children: categories.asMap().keys.map((index) => _category(context, categories, index)).toList(),
+                  children: categories
+                      .asMap()
+                      .keys
+                      .map((index) => _category(context, categories, index))
+                      .toList(),
                 ),
               ),
             ),
@@ -46,7 +50,8 @@ class CategoriesPanelPage extends StatelessWidget {
             icon: Icon(Icons.add),
             label: Text("Add Category"),
             onPressed: () async {
-              final categoryName = await showDialog<String>(context: context, builder: (_) => AddCategoryDialog());
+              final categoryName = await showDialog<String>(
+                  context: context, builder: (_) => AddCategoryDialog());
               if (categoryName != null) {
                 await context.read<AppsService>().addCategory(categoryName);
               }
@@ -55,7 +60,9 @@ class CategoriesPanelPage extends StatelessWidget {
         ],
       );
 
-  Widget _category(BuildContext context, List<CategoryWithApps> categories, int index) => Padding(
+  Widget _category(
+          BuildContext context, List<CategoryWithApps> categories, int index) =>
+      Padding(
         key: Key(categories[index].category.id.toString()),
         padding: EdgeInsets.only(bottom: 8),
         child: Card(
@@ -64,7 +71,8 @@ class CategoriesPanelPage extends StatelessWidget {
             alignment: 0.5,
             child: ListTile(
               dense: true,
-              title: Text(categories[index].category.name, style: Theme.of(context).textTheme.bodyMedium),
+              title: Text(categories[index].category.name,
+                  style: Theme.of(context).textTheme.bodyMedium),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -72,13 +80,17 @@ class CategoriesPanelPage extends StatelessWidget {
                     constraints: BoxConstraints(),
                     splashRadius: 20,
                     icon: Icon(Icons.arrow_upward),
-                    onPressed: index > 0 ? () => _move(context, index, index - 1) : null,
+                    onPressed: index > 0
+                        ? () => _move(context, index, index - 1)
+                        : null,
                   ),
                   IconButton(
                     constraints: BoxConstraints(),
                     splashRadius: 20,
                     icon: Icon(Icons.arrow_downward),
-                    onPressed: index < categories.length - 1 ? () => _move(context, index, index + 1) : null,
+                    onPressed: index < categories.length - 1
+                        ? () => _move(context, index, index + 1)
+                        : null,
                   ),
                   IconButton(
                     constraints: BoxConstraints(),

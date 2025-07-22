@@ -103,7 +103,8 @@ void main() {
   });
 }
 
-Future<void> _pumpWidgetWithProviders(WidgetTester tester, AppsService appsService) async {
+Future<void> _pumpWidgetWithProviders(
+    WidgetTester tester, AppsService appsService) async {
   await tester.pumpWidget(
     MultiProvider(
       providers: [
@@ -111,7 +112,8 @@ Future<void> _pumpWidgetWithProviders(WidgetTester tester, AppsService appsServi
       ],
       builder: (_, __) => MaterialApp(
         routes: {
-          CategoryPanelPage.routeName: (_) => Container(key: Key("CategoryPanelPage")),
+          CategoryPanelPage.routeName: (_) =>
+              Container(key: Key("CategoryPanelPage")),
         },
         home: Scaffold(body: CategoriesPanelPage()),
       ),

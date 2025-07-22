@@ -137,7 +137,8 @@ void main() {
     });
     final fLauncherChannel = FLauncherChannel();
 
-    final getContentAvailable = await fLauncherChannel.checkForGetContentAvailability();
+    final getContentAvailable =
+        await fLauncherChannel.checkForGetContentAvailability();
 
     expect(getContentAvailable, isTrue);
   });

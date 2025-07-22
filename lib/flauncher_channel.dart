@@ -24,25 +24,32 @@ class FLauncherChannel {
   static const _methodChannel = MethodChannel('me.efesser.flauncher/method');
   static const _eventChannel = EventChannel('me.efesser.flauncher/event');
 
-  Future<List<dynamic>> getApplications() async => (await _methodChannel.invokeListMethod('getApplications'))!;
+  Future<List<dynamic>> getApplications() async =>
+      (await _methodChannel.invokeListMethod('getApplications'))!;
 
   Future<bool> applicationExists(String packageName) async =>
       await _methodChannel.invokeMethod('applicationExists', packageName);
 
-  Future<void> launchApp(String packageName) async => await _methodChannel.invokeMethod('launchApp', packageName);
+  Future<void> launchApp(String packageName) async =>
+      await _methodChannel.invokeMethod('launchApp', packageName);
 
-  Future<void> openSettings() async => await _methodChannel.invokeMethod('openSettings');
+  Future<void> openSettings() async =>
+      await _methodChannel.invokeMethod('openSettings');
 
-  Future<void> openAppInfo(String packageName) async => await _methodChannel.invokeMethod('openAppInfo', packageName);
+  Future<void> openAppInfo(String packageName) async =>
+      await _methodChannel.invokeMethod('openAppInfo', packageName);
 
-  Future<void> uninstallApp(String packageName) async => await _methodChannel.invokeMethod('uninstallApp', packageName);
+  Future<void> uninstallApp(String packageName) async =>
+      await _methodChannel.invokeMethod('uninstallApp', packageName);
 
-  Future<bool> isDefaultLauncher() async => await _methodChannel.invokeMethod('isDefaultLauncher');
+  Future<bool> isDefaultLauncher() async =>
+      await _methodChannel.invokeMethod('isDefaultLauncher');
 
   Future<bool> checkForGetContentAvailability() async =>
       await _methodChannel.invokeMethod("checkForGetContentAvailability");
 
-  Future<void> startAmbientMode() async => await _methodChannel.invokeMethod("startAmbientMode");
+  Future<void> startAmbientMode() async =>
+      await _methodChannel.invokeMethod("startAmbientMode");
 
   void addAppsChangedListener(void Function(Map<dynamic, dynamic>) listener) =>
       _eventChannel.receiveBroadcastStream().listen((event) => listener(event));

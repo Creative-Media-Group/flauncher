@@ -27,16 +27,22 @@ class UnsplashService {
 
   UnsplashService(this._unsplashClient);
 
-  Future<Photo> randomPhoto(String query) async =>
-      (await _unsplashClient.photos.random(query: query, orientation: unsplash.PhotoOrientation.landscape).goAndGet())
-          .map(_buildPhoto)
-          .first;
-
-  Future<List<Photo>> searchPhotos(String query) async => (await _unsplashClient.photos
-          .random(query: query, orientation: unsplash.PhotoOrientation.landscape, count: 30)
+  Future<Photo> randomPhoto(String query) async => (await _unsplashClient.photos
+          .random(
+              query: query, orientation: unsplash.PhotoOrientation.landscape)
           .goAndGet())
       .map(_buildPhoto)
-      .toList();
+      .first;
+
+  Future<List<Photo>> searchPhotos(String query) async =>
+      (await _unsplashClient.photos
+              .random(
+                  query: query,
+                  orientation: unsplash.PhotoOrientation.landscape,
+                  count: 30)
+              .goAndGet())
+          .map(_buildPhoto)
+          .toList();
 
   Future<Uint8List> downloadPhoto(Photo photo) => _downloadResized(photo);
 
@@ -54,8 +60,15 @@ class UnsplashService {
     return response.bodyBytes;
   }
 
-  Photo _buildPhoto(unsplash.Photo photo) => Photo(photo.id, photo.user.name, photo.urls.small, photo.urls.raw,
-      photo.user.links.html.replace(queryParameters: {"utm_source": "flauncher", "utm_medium": "referral"}));
+  Photo _buildPhoto(unsplash.Photo photo) => Photo(
+      photo.id,
+      photo.user.name,
+      photo.urls.small,
+      photo.urls.raw,
+      photo.user.links.html.replace(queryParameters: {
+        "utm_source": "flauncher",
+        "utm_medium": "referral"
+      }));
 }
 
 class Photo {

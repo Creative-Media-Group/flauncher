@@ -49,9 +49,13 @@ class _TimeWidgetState extends State<TimeWidget> {
   Widget build(BuildContext context) => Selector<SettingsService, bool>(
         selector: (_, settingsService) => settingsService.use24HourTimeFormat,
         builder: (context, use24HourTimeFormat, _) => Text(
-          use24HourTimeFormat ? DateFormat.Hm().format(_now) : DateFormat.jm().format(_now),
+          use24HourTimeFormat
+              ? DateFormat.Hm().format(_now)
+              : DateFormat.jm().format(_now),
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
-            shadows: [Shadow(color: Colors.black54, offset: Offset(1, 1), blurRadius: 8)],
+            shadows: [
+              Shadow(color: Colors.black54, offset: Offset(1, 1), blurRadius: 8)
+            ],
           ),
           textAlign: TextAlign.end,
         ),

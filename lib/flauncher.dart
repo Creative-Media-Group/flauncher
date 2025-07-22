@@ -37,7 +37,8 @@ class FLauncher extends StatelessWidget {
         child: Stack(
           children: [
             Consumer<WallpaperService>(
-              builder: (_, wallpaper, __) => _wallpaper(context, wallpaper.wallpaperBytes, wallpaper.gradient.gradient),
+              builder: (_, wallpaper, __) => _wallpaper(context,
+                  wallpaper.wallpaperBytes, wallpaper.gradient.gradient),
             ),
             Scaffold(
               backgroundColor: Colors.transparent,
@@ -46,7 +47,8 @@ class FLauncher extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
                 child: Consumer<AppsService>(
                   builder: (context, appsService, _) => appsService.initialized
-                      ? SingleChildScrollView(child: _categories(appsService.categoriesWithApps))
+                      ? SingleChildScrollView(
+                          child: _categories(appsService.categoriesWithApps))
                       : _emptyState(context),
                 ),
               ),
@@ -87,7 +89,8 @@ class FLauncher extends StatelessWidget {
                 left: 2.0,
                 top: 18.0,
                 child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2, tileMode: TileMode.decal),
+                  imageFilter: ImageFilter.blur(
+                      sigmaX: 2, sigmaY: 2, tileMode: TileMode.decal),
                   child: Icon(Icons.settings_outlined, color: Colors.black54),
                 ),
               ),
@@ -96,7 +99,8 @@ class FLauncher extends StatelessWidget {
                 constraints: BoxConstraints(),
                 splashRadius: 20,
                 icon: Icon(Icons.settings_outlined),
-                onPressed: () => showDialog(context: context, builder: (_) => SettingsPanel()),
+                onPressed: () => showDialog(
+                    context: context, builder: (_) => SettingsPanel()),
               ),
             ],
           ),
@@ -110,15 +114,19 @@ class FLauncher extends StatelessWidget {
         ],
       );
 
-  Widget _wallpaper(BuildContext context, Uint8List? wallpaperImage, Gradient gradient) => wallpaperImage != null
-      ? Image.memory(
-          wallpaperImage,
-          key: Key("background"),
-          fit: BoxFit.cover,
-          height: window.physicalSize.height,
-          width: window.physicalSize.width,
-        )
-      : Container(key: Key("background"), decoration: BoxDecoration(gradient: gradient));
+  Widget _wallpaper(
+          BuildContext context, Uint8List? wallpaperImage, Gradient gradient) =>
+      wallpaperImage != null
+          ? Image.memory(
+              wallpaperImage,
+              key: Key("background"),
+              fit: BoxFit.cover,
+              height: window.physicalSize.height,
+              width: window.physicalSize.width,
+            )
+          : Container(
+              key: Key("background"),
+              decoration: BoxDecoration(gradient: gradient));
 
   Widget _emptyState(BuildContext context) => Center(
         child: Column(

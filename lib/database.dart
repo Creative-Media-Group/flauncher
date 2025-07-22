@@ -64,9 +64,11 @@ class Categories extends Table {
 
 @DataClassName("AppCategory")
 class AppsCategories extends Table {
-  IntColumn get categoryId => integer().customConstraint("REFERENCES categories(id) ON DELETE CASCADE")();
+  IntColumn get categoryId => integer()
+      .customConstraint("REFERENCES categories(id) ON DELETE CASCADE")();
 
-  TextColumn get appPackageName => text().customConstraint("REFERENCES apps(package_name) ON DELETE CASCADE")();
+  TextColumn get appPackageName => text()
+      .customConstraint("REFERENCES apps(package_name) ON DELETE CASCADE")();
 
   IntColumn get order => integer()();
 
@@ -95,9 +97,11 @@ enum CategoryType {
 class FLauncherDatabase extends _$FLauncherDatabase {
   late final bool wasCreated;
 
-  FLauncherDatabase(DatabaseConnection databaseConnection) : super(databaseConnection);
+  FLauncherDatabase(DatabaseConnection databaseConnection)
+      : super(databaseConnection);
 
-  FLauncherDatabase.inMemory() : super(LazyDatabase(() => NativeDatabase.memory()));
+  FLauncherDatabase.inMemory()
+      : super(LazyDatabase(() => NativeDatabase.memory()));
 
   @override
   int get schemaVersion => 5;
@@ -109,7 +113,8 @@ class FLauncherDatabase extends _$FLauncherDatabase {
         },
         onUpgrade: (migrator, from, to) async {
           if (from <= 1) {
-            await migrator.alterTable(TableMigration(apps, newColumns: [apps.hidden, apps.sideloaded]));
+            await migrator.alterTable(TableMigration(apps,
+                newColumns: [apps.hidden, apps.sideloaded]));
           }
           if (from <= 2 && from != 1) {
             await migrator.addColumn(apps, apps.hidden);
@@ -119,7 +124,8 @@ class FLauncherDatabase extends _$FLauncherDatabase {
             await migrator.addColumn(categories, categories.type);
             await migrator.addColumn(categories, categories.rowHeight);
             await migrator.addColumn(categories, categories.columnsCount);
-            await (update(categories)..where((tbl) => tbl.name.equals("Applications")))
+            await (update(categories)
+                  ..where((tbl) => tbl.name.equals("Applications")))
                 .write(CategoriesCompanion(type: Value(CategoryType.grid)));
           }
           if (from <= 4 && from != 1) {
@@ -134,20 +140,24 @@ class FLauncherDatabase extends _$FLauncherDatabase {
       );
 
   Future<List<App>> listApplications() =>
-      (select(apps)..orderBy([(expr) => OrderingTerm.asc(expr.name.lower())])).get();
+      (select(apps)..orderBy([(expr) => OrderingTerm.asc(expr.name.lower())]))
+          .get();
 
   Future<void> persistApps(List<AppsCompanion> applications) =>
       batch((batch) => batch.insertAllOnConflictUpdate(apps, applications));
 
   Future<void> updateApp(String packageName, AppsCompanion value) =>
-      (update(apps)..where((tbl) => tbl.packageName.equals(packageName))).write(value);
+      (update(apps)..where((tbl) => tbl.packageName.equals(packageName)))
+          .write(value);
 
   Future<void> deleteApps(List<String> packageNames) =>
       (delete(apps)..where((tbl) => tbl.packageName.isIn(packageNames))).go();
 
-  Future<void> insertCategory(CategoriesCompanion category) => into(categories).insert(category);
+  Future<void> insertCategory(CategoriesCompanion category) =>
+      into(categories).insert(category);
 
-  Future<void> deleteCategory(int id) => (delete(categories)..where((tbl) => tbl.id.equals(id))).go();
+  Future<void> deleteCategory(int id) =>
+      (delete(categories)..where((tbl) => tbl.id.equals(id))).go();
 
   Future<void> updateCategories(List<CategoriesCompanion> values) => batch(
         (batch) {
@@ -164,26 +174,37 @@ class FLauncherDatabase extends _$FLauncherDatabase {
   Future<void> updateCategory(int id, CategoriesCompanion value) =>
       (update(categories)..where((tbl) => tbl.id.equals(id))).write(value);
 
-  Future<void> deleteAppCategory(int categoryId, String packageName) => (delete(appsCategories)
-        ..where((tbl) => tbl.categoryId.equals(categoryId) & tbl.appPackageName.equals(packageName)))
-      .go();
+  Future<void> deleteAppCategory(int categoryId, String packageName) =>
+      (delete(appsCategories)
+            ..where((tbl) =>
+                tbl.categoryId.equals(categoryId) &
+                tbl.appPackageName.equals(packageName)))
+          .go();
 
   Future<void> insertAppsCategories(List<AppsCategoriesCompanion> value) =>
-      batch((batch) => batch.insertAll(appsCategories, value, mode: InsertMode.insertOrIgnore));
+      batch((batch) => batch.insertAll(appsCategories, value,
+          mode: InsertMode.insertOrIgnore));
 
   Future<void> replaceAppsCategories(List<AppsCategoriesCompanion> value) =>
       batch((batch) => batch.replaceAll(appsCategories, value));
 
   Future<List<CategoryWithApps>> listCategoriesWithVisibleApps() async {
     final query = select(categories).join([
-      leftOuterJoin(appsCategories, appsCategories.categoryId.equalsExp(categories.id)),
-      leftOuterJoin(apps, apps.packageName.equalsExp(appsCategories.appPackageName) & apps.hidden.equals(false)),
+      leftOuterJoin(
+          appsCategories, appsCategories.categoryId.equalsExp(categories.id)),
+      leftOuterJoin(
+          apps,
+          apps.packageName.equalsExp(appsCategories.appPackageName) &
+              apps.hidden.equals(false)),
     ]);
     query.orderBy([
       OrderingTerm.asc(categories.order),
       OrderingTerm.asc(
         categories.sort.caseMatch(
-          when: {Constant(0): appsCategories.order, Constant(1): apps.name.lower()},
+          when: {
+            Constant(0): appsCategories.order,
+            Constant(1): apps.name.lower()
+          },
         ),
       ),
     ]);
@@ -198,12 +219,15 @@ class FLauncherDatabase extends _$FLauncherDatabase {
         categoryToApps.add(app);
       }
     }
-    return categoriesToApps.entries.map((entry) => CategoryWithApps(entry.key, entry.value)).toList();
+    return categoriesToApps.entries
+        .map((entry) => CategoryWithApps(entry.key, entry.value))
+        .toList();
   }
 
   Future<int?> nextAppCategoryOrder(int categoryId) async {
     final query = selectOnly(appsCategories);
-    final maxExpression = coalesce([appsCategories.order.max(), Constant(-1)]) + Constant(1);
+    final maxExpression =
+        coalesce([appsCategories.order.max(), Constant(-1)]) + Constant(1);
     query.addColumns([maxExpression]);
     query.where(appsCategories.categoryId.equals(categoryId));
     final result = await query.getSingle();
@@ -214,5 +238,6 @@ class FLauncherDatabase extends _$FLauncherDatabase {
 DatabaseConnection connect() => DatabaseConnection.delayed(() async {
       final dbFolder = await getApplicationDocumentsDirectory();
       final file = File(path.join(dbFolder.path, 'db.sqlite'));
-      return DatabaseConnection(NativeDatabase(file, logStatements: kDebugMode));
+      return DatabaseConnection(
+          NativeDatabase(file, logStatements: kDebugMode));
     }());

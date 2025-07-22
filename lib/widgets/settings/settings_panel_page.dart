@@ -44,10 +44,12 @@ class SettingsPanelPage extends StatelessWidget {
                     children: [
                       Icon(Icons.apps),
                       Container(width: 8),
-                      Text("Applications", style: Theme.of(context).textTheme.bodyMedium),
+                      Text("Applications",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ],
                   ),
-                  onPressed: () => Navigator.of(context).pushNamed(ApplicationsPanelPage.routeName),
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(ApplicationsPanelPage.routeName),
                 ),
               ),
               TextButton(
@@ -55,20 +57,24 @@ class SettingsPanelPage extends StatelessWidget {
                   children: [
                     Icon(Icons.category),
                     Container(width: 8),
-                    Text("Categories", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("Categories",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
-                onPressed: () => Navigator.of(context).pushNamed(CategoriesPanelPage.routeName),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(CategoriesPanelPage.routeName),
               ),
               TextButton(
                 child: Row(
                   children: [
                     Icon(Icons.wallpaper_outlined),
                     Container(width: 8),
-                    Text("Wallpaper", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("Wallpaper",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
-                onPressed: () => Navigator.of(context).pushNamed(WallpaperPanelPage.routeName),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(WallpaperPanelPage.routeName),
               ),
               Divider(),
               TextButton(
@@ -76,7 +82,8 @@ class SettingsPanelPage extends StatelessWidget {
                   children: [
                     Icon(Icons.settings_outlined),
                     Container(width: 8),
-                    Text("Android settings", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("Android settings",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
                 onPressed: () => context.read<AppsService>().openSettings(),
@@ -85,14 +92,16 @@ class SettingsPanelPage extends StatelessWidget {
               SwitchListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 value: settingsService.use24HourTimeFormat,
-                onChanged: (value) => settingsService.setUse24HourTimeFormat(value),
+                onChanged: (value) =>
+                    settingsService.setUse24HourTimeFormat(value),
                 title: Text("Use 24-hour time format"),
                 dense: true,
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 value: settingsService.appHighlightAnimationEnabled,
-                onChanged: (value) => settingsService.setAppHighlightAnimationEnabled(value),
+                onChanged: (value) =>
+                    settingsService.setAppHighlightAnimationEnabled(value),
                 title: Text("App card highlight animation"),
                 dense: true,
               ),
@@ -100,18 +109,22 @@ class SettingsPanelPage extends StatelessWidget {
               SwitchListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 value: settingsService.crashReportsEnabled,
-                onChanged: (value) => settingsService.setCrashReportsEnabled(value),
+                onChanged: (value) =>
+                    settingsService.setCrashReportsEnabled(value),
                 title: Text("Crash Reporting"),
                 dense: true,
-                subtitle: Text("Automatically send crash reports through Firebase Crashlytics."),
+                subtitle: Text(
+                    "Automatically send crash reports through Firebase Crashlytics."),
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 value: settingsService.analyticsEnabled,
-                onChanged: (value) => settingsService.setAnalyticsEnabled(value),
+                onChanged: (value) =>
+                    settingsService.setAnalyticsEnabled(value),
                 title: Text("Analytics Reporting"),
                 dense: true,
-                subtitle: Text("Share analytics data through Firebase Analytics."),
+                subtitle:
+                    Text("Share analytics data through Firebase Analytics."),
               ),
               Divider(),
               TextButton(
@@ -119,16 +132,18 @@ class SettingsPanelPage extends StatelessWidget {
                   children: [
                     Icon(Icons.info_outline),
                     Container(width: 8),
-                    Text("About FLauncher", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("About FLauncher",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
                 onPressed: () => showDialog(
                   context: context,
                   builder: (_) => FutureBuilder<PackageInfo>(
                     future: PackageInfo.fromPlatform(),
-                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done
-                        ? FLauncherAboutDialog(packageInfo: snapshot.data!)
-                        : Container(),
+                    builder: (context, snapshot) =>
+                        snapshot.connectionState == ConnectionState.done
+                            ? FLauncherAboutDialog(packageInfo: snapshot.data!)
+                            : Container(),
                   ),
                 ),
               ),

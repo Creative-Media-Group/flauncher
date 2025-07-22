@@ -38,8 +38,18 @@ class UnsplashPanelPage extends StatelessWidget {
               type: MaterialType.transparency,
               child: TabBar(
                 tabs: [
-                  Tab(child: Row(children: [Icon(Icons.sync), SizedBox(width: 8), Text("Random")])),
-                  Tab(child: Row(children: [Icon(Icons.search), SizedBox(width: 8), Text("Search")])),
+                  Tab(
+                      child: Row(children: [
+                    Icon(Icons.sync),
+                    SizedBox(width: 8),
+                    Text("Random")
+                  ])),
+                  Tab(
+                      child: Row(children: [
+                    Icon(Icons.search),
+                    SizedBox(width: 8),
+                    Text("Search")
+                  ])),
                 ],
               ),
             ),
@@ -66,7 +76,8 @@ class _RandomTabState extends State<_RandomTab> {
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           children: [
-            _randomCard("Landscape", AssetImage("assets/landscape.png"), autofocus: true),
+            _randomCard("Landscape", AssetImage("assets/landscape.png"),
+                autofocus: true),
             _randomCard("Abstract", AssetImage("assets/abstract.png")),
             _randomCard("Minimal", AssetImage("assets/minimal.png")),
             _randomCard("Texture", AssetImage("assets/texture.png")),
@@ -78,7 +89,9 @@ class _RandomTabState extends State<_RandomTab> {
             _randomCard("Space", AssetImage("assets/space.png")),
           ]);
 
-  Widget _randomCard(String text, AssetImage assetImage, {bool autofocus = false}) => Focus(
+  Widget _randomCard(String text, AssetImage assetImage,
+          {bool autofocus = false}) =>
+      Focus(
         canRequestFocus: false,
         child: Builder(
           builder: (context) => Stack(
@@ -93,7 +106,10 @@ class _RandomTabState extends State<_RandomTab> {
                     if (enabled) {
                       setState(() => enabled = false);
                       try {
-                        await context.read<WallpaperService>().randomFromUnsplash("${text.toLowerCase()} wallpaper");
+                        await context
+                            .read<WallpaperService>()
+                            .randomFromUnsplash(
+                                "${text.toLowerCase()} wallpaper");
                       } finally {
                         setState(() => enabled = true);
                       }
@@ -109,20 +125,24 @@ class _RandomTabState extends State<_RandomTab> {
                           width: 32,
                         ),
                         SizedBox(width: 8),
-                        Flexible(child: Text(text, overflow: TextOverflow.ellipsis))
+                        Flexible(
+                            child: Text(text, overflow: TextOverflow.ellipsis))
                       ],
                     ),
                   ),
                 ),
               ),
-              if (!enabled && Focus.of(context).hasFocus) Center(child: CircularProgressIndicator()),
+              if (!enabled && Focus.of(context).hasFocus)
+                Center(child: CircularProgressIndicator()),
             ],
           ),
         ),
       );
 
   ShapeBorder? _cardBorder(bool hasFocus) => hasFocus
-      ? RoundedRectangleBorder(side: BorderSide(color: Colors.white, width: 2), borderRadius: BorderRadius.circular(4))
+      ? RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 2),
+          borderRadius: BorderRadius.circular(4))
       : null;
 }
 
@@ -162,7 +182,9 @@ class _SearchTabState extends State<_SearchTab> {
                       _searchResults = [];
                     });
                     try {
-                      final searchResults = await context.read<WallpaperService>().searchFromUnsplash(value);
+                      final searchResults = await context
+                          .read<WallpaperService>()
+                          .searchFromUnsplash(value);
                       setState(() => _searchResults = searchResults);
                     } finally {
                       setState(() => enabled = true);
@@ -182,7 +204,9 @@ class _SearchTabState extends State<_SearchTab> {
               children: _searchResults
                   .asMap()
                   .entries
-                  .map((item) => EnsureVisible(alignment: 0.5, child: _searchResultCard(item.key, item.value)))
+                  .map((item) => EnsureVisible(
+                      alignment: 0.5,
+                      child: _searchResultCard(item.key, item.value)))
                   .toList(),
             ),
           ),
@@ -209,16 +233,21 @@ class _SearchTabState extends State<_SearchTab> {
                           if (enabled) {
                             setState(() => enabled = false);
                             try {
-                              await context.read<WallpaperService>().setFromUnsplash(photo);
+                              await context
+                                  .read<WallpaperService>()
+                                  .setFromUnsplash(photo);
                             } finally {
                               setState(() => enabled = true);
                             }
                           }
                         },
-                        child: Ink.image(image: NetworkImage(photo.small.toString()), fit: BoxFit.cover),
+                        child: Ink.image(
+                            image: NetworkImage(photo.small.toString()),
+                            fit: BoxFit.cover),
                       ),
                     ),
-                    if (!enabled && Focus.of(context).hasFocus) Center(child: CircularProgressIndicator()),
+                    if (!enabled && Focus.of(context).hasFocus)
+                      Center(child: CircularProgressIndicator()),
                   ],
                 ),
               ),
@@ -226,7 +255,10 @@ class _SearchTabState extends State<_SearchTab> {
                 padding: EdgeInsets.symmetric(horizontal: 4),
                 child: Text(
                   photo.username,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(decoration: TextDecoration.underline),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(decoration: TextDecoration.underline),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -236,6 +268,8 @@ class _SearchTabState extends State<_SearchTab> {
       );
 
   ShapeBorder? _cardBorder(bool hasFocus) => hasFocus
-      ? RoundedRectangleBorder(side: BorderSide(color: Colors.white, width: 2), borderRadius: BorderRadius.circular(4))
+      ? RoundedRectangleBorder(
+          side: BorderSide(color: Colors.white, width: 2),
+          borderRadius: BorderRadius.circular(4))
       : null;
 }

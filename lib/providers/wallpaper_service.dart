@@ -43,9 +43,11 @@ class WallpaperService extends ChangeNotifier {
         orElse: () => FLauncherGradients.greatWhale,
       );
 
-  set settingsService(SettingsService settingsService) => _settingsService = settingsService;
+  set settingsService(SettingsService settingsService) =>
+      _settingsService = settingsService;
 
-  WallpaperService(this._imagePicker, this._fLauncherChannel, this._unsplashService) {
+  WallpaperService(
+      this._imagePicker, this._fLauncherChannel, this._unsplashService) {
     _init();
   }
 
@@ -62,7 +64,8 @@ class WallpaperService extends ChangeNotifier {
     if (!await _fLauncherChannel.checkForGetContentAvailability()) {
       throw NoFileExplorerException();
     }
-    final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
       await _wallpaperFile.writeAsBytes(bytes);
@@ -77,19 +80,20 @@ class WallpaperService extends ChangeNotifier {
     final bytes = await _unsplashService.downloadPhoto(photo);
     await _wallpaperFile.writeAsBytes(bytes);
     _wallpaper = bytes;
-    await _settingsService
-        .setUnsplashAuthor(jsonEncode({"username": photo.username, "link": photo.userLink.toString()}));
+    await _settingsService.setUnsplashAuthor(jsonEncode(
+        {"username": photo.username, "link": photo.userLink.toString()}));
     notifyListeners();
   }
 
-  Future<List<Photo>> searchFromUnsplash(String query) => _unsplashService.searchPhotos(query);
+  Future<List<Photo>> searchFromUnsplash(String query) =>
+      _unsplashService.searchPhotos(query);
 
   Future<void> setFromUnsplash(Photo photo) async {
     final bytes = await _unsplashService.downloadPhoto(photo);
     await _wallpaperFile.writeAsBytes(bytes);
     _wallpaper = bytes;
-    await _settingsService
-        .setUnsplashAuthor(jsonEncode({"username": photo.username, "link": photo.userLink.toString()}));
+    await _settingsService.setUnsplashAuthor(jsonEncode(
+        {"username": photo.username, "link": photo.userLink.toString()}));
     notifyListeners();
   }
 

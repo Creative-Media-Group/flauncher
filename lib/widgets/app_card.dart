@@ -30,7 +30,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-const _validationKeys = [LogicalKeyboardKey.select, LogicalKeyboardKey.enter, LogicalKeyboardKey.gameButtonA];
+const _validationKeys = [
+  LogicalKeyboardKey.select,
+  LogicalKeyboardKey.enter,
+  LogicalKeyboardKey.gameButtonA
+];
 
 class AppCard extends StatefulWidget {
   final Category category;
@@ -56,7 +60,8 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
   bool _moving = false;
   MemoryImage? _imageProvider;
   late final AnimationController _animation = AnimationController(
-    vsync: Provider.of<TickerModel>(context, listen: false).tickerProvider ?? this,
+    vsync:
+        Provider.of<TickerModel>(context, listen: false).tickerProvider ?? this,
     duration: Duration(
       milliseconds: 800,
     ),
@@ -120,7 +125,10 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
                     onTap: () => _onPressed(context, null),
                     onLongPress: () => _onLongPress(context, null),
                     child: widget.application.banner != null
-                        ? Ink.image(image: _cachedMemoryImage(widget.application.banner!), fit: BoxFit.cover)
+                        ? Ink.image(
+                            image:
+                                _cachedMemoryImage(widget.application.banner!),
+                            fit: BoxFit.cover)
                         : Padding(
                             padding: EdgeInsets.all(8),
                             child: Row(
@@ -128,7 +136,8 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
                                 Expanded(
                                   flex: 2,
                                   child: Ink.image(
-                                    image: _cachedMemoryImage(widget.application.icon!),
+                                    image: _cachedMemoryImage(
+                                        widget.application.icon!),
                                     height: double.infinity,
                                   ),
                                 ),
@@ -138,7 +147,8 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
                                     padding: EdgeInsets.only(left: 8),
                                     child: Text(
                                       widget.application.name,
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                     ),
@@ -158,7 +168,8 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   Selector<SettingsService, bool>(
-                    selector: (_, settingsService) => settingsService.appHighlightAnimationEnabled,
+                    selector: (_, settingsService) =>
+                        settingsService.appHighlightAnimationEnabled,
                     builder: (context, appHighlightAnimationEnabled, __) {
                       if (appHighlightAnimationEnabled) {
                         _animation.forward();
@@ -172,7 +183,8 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
                                 border: Focus.of(context).hasFocus
                                     ? Border.all(
                                         color: _lastBorderColor =
-                                            computeBorderColor(_animation.value, _lastBorderColor),
+                                            computeBorderColor(_animation.value,
+                                                _lastBorderColor),
                                         width: 3)
                                     : null,
                                 borderRadius: BorderRadius.circular(8),
@@ -227,8 +239,11 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
 
   KeyEventResult _onPressed(BuildContext context, LogicalKeyboardKey? key) {
     if (_moving) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => Scrollable.ensureVisible(context,
-          alignment: 0.1, duration: Duration(milliseconds: 100), curve: Curves.easeInOut));
+      WidgetsBinding.instance.addPostFrameCallback((_) =>
+          Scrollable.ensureVisible(context,
+              alignment: 0.1,
+              duration: Duration(milliseconds: 100),
+              curve: Curves.easeInOut));
       if (key == LogicalKeyboardKey.arrowLeft) {
         widget.onMove(AxisDirection.left);
       } else if (key == LogicalKeyboardKey.arrowUp) {

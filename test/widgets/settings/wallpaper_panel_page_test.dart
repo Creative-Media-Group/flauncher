@@ -42,7 +42,8 @@ void main() {
     final settingsService = MockSettingsService();
     final wallpaperService = MockWallpaperService();
     when(settingsService.unsplashEnabled).thenReturn(true);
-    when(settingsService.unsplashAuthor).thenReturn('{"username": "John Doe", "link": "https://localhost"}');
+    when(settingsService.unsplashAuthor)
+        .thenReturn('{"username": "John Doe", "link": "https://localhost"}');
 
     await _pumpWidgetWithProviders(tester, settingsService, wallpaperService);
 
@@ -82,11 +83,13 @@ void main() {
       verify(wallpaperService.pickWallpaper());
     });
 
-    testWidgets("shows snack bar if not file explorer available", (tester) async {
+    testWidgets("shows snack bar if not file explorer available",
+        (tester) async {
       final settingsService = MockSettingsService();
       final wallpaperService = MockWallpaperService();
       when(settingsService.unsplashEnabled).thenReturn(true);
-      when(wallpaperService.pickWallpaper()).thenThrow(NoFileExplorerException());
+      when(wallpaperService.pickWallpaper())
+          .thenThrow(NoFileExplorerException());
       when(settingsService.unsplashAuthor).thenReturn(null);
 
       await _pumpWidgetWithProviders(tester, settingsService, wallpaperService);
@@ -96,7 +99,10 @@ void main() {
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       await tester.pumpAndSettle();
       expect(find.byType(SnackBar), findsOneWidget);
-      expect(find.text("Please install a file explorer in order to pick an image."), findsOneWidget);
+      expect(
+          find.text(
+              "Please install a file explorer in order to pick an image."),
+          findsOneWidget);
     });
   });
 }
@@ -114,8 +120,10 @@ Future<void> _pumpWidgetWithProviders(
       ],
       builder: (_, __) => MaterialApp(
         routes: {
-          UnsplashPanelPage.routeName: (_) => Container(key: Key("UnsplashPanelPage")),
-          GradientPanelPage.routeName: (_) => Container(key: Key("GradientPanelPage")),
+          UnsplashPanelPage.routeName: (_) =>
+              Container(key: Key("UnsplashPanelPage")),
+          GradientPanelPage.routeName: (_) =>
+              Container(key: Key("GradientPanelPage")),
         },
         home: Scaffold(body: WallpaperPanelPage()),
       ),

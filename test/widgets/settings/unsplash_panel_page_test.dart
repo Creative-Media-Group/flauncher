@@ -37,7 +37,8 @@ void main() {
     binding.platformDispatcher.textScaleFactorTestValue = 0.8;
   });
 
-  testWidgets("Selecting an Unsplash category calls WallpaperService", (tester) async {
+  testWidgets("Selecting an Unsplash category calls WallpaperService",
+      (tester) async {
     final wallpaperService = MockWallpaperService();
 
     await _pumpWidgetWithProviders(tester, wallpaperService);
@@ -47,7 +48,9 @@ void main() {
     verify(wallpaperService.randomFromUnsplash("landscape wallpaper"));
   });
 
-  testWidgets("Searching on Unsplash shows results and calls WallpaperService on selection", (tester) async {
+  testWidgets(
+      "Searching on Unsplash shows results and calls WallpaperService on selection",
+      (tester) async {
     mockNetworkImagesFor(() async {
       final wallpaperService = MockWallpaperService();
       final photo = Photo(
@@ -57,7 +60,8 @@ void main() {
         Uri.parse("http://localhost/raw.jpg"),
         Uri.parse("http://localhost/@author"),
       );
-      when(wallpaperService.searchFromUnsplash("cat")).thenAnswer((_) => Future.value([photo]));
+      when(wallpaperService.searchFromUnsplash("cat"))
+          .thenAnswer((_) => Future.value([photo]));
 
       await _pumpWidgetWithProviders(tester, wallpaperService);
 
@@ -78,13 +82,15 @@ void main() {
   });
 }
 
-Future<void> _pumpWidgetWithProviders(WidgetTester tester, WallpaperService wallpaperService) async {
+Future<void> _pumpWidgetWithProviders(
+    WidgetTester tester, WallpaperService wallpaperService) async {
   await tester.pumpWidget(
     MultiProvider(
       providers: [
         ChangeNotifierProvider<WallpaperService>.value(value: wallpaperService),
       ],
-      builder: (_, __) => MaterialApp(home: Material(child: UnsplashPanelPage())),
+      builder: (_, __) =>
+          MaterialApp(home: Material(child: UnsplashPanelPage())),
     ),
   );
   await tester.pumpAndSettle();

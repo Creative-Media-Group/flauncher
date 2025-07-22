@@ -32,21 +32,26 @@ void main() {
   late final _MockPathProviderPlatform pathProviderPlatform;
   setUpAll(() {
     pathProviderPlatform = _MockPathProviderPlatform();
-    when(pathProviderPlatform.getApplicationDocumentsPath()).thenAnswer((_) => Future.value("."));
+    when(pathProviderPlatform.getApplicationDocumentsPath())
+        .thenAnswer((_) => Future.value("."));
     PathProviderPlatform.instance = pathProviderPlatform;
   });
 
   group("pickWallpaper", () {
     test("picks image", () async {
       final pickedFile = _MockXFile();
-      when(pickedFile.readAsBytes()).thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
+      when(pickedFile.readAsBytes())
+          .thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
       final imagePicker = _MockImagePicker();
       final fLauncherChannel = MockFLauncherChannel();
       final settingsService = MockSettingsService();
-      when(imagePicker.pickImage(source: ImageSource.gallery)).thenAnswer((_) => Future.value(pickedFile));
-      when(fLauncherChannel.checkForGetContentAvailability()).thenAnswer((_) => Future.value(true));
-      final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, MockUnsplashService())
-        ..settingsService = settingsService;
+      when(imagePicker.pickImage(source: ImageSource.gallery))
+          .thenAnswer((_) => Future.value(pickedFile));
+      when(fLauncherChannel.checkForGetContentAvailability())
+          .thenAnswer((_) => Future.value(true));
+      final wallpaperService =
+          WallpaperService(imagePicker, fLauncherChannel, MockUnsplashService())
+            ..settingsService = settingsService;
       await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
       await wallpaperService.pickWallpaper();
@@ -58,11 +63,14 @@ void main() {
 
     test("throws error when no file explorer installed", () async {
       final fLauncherChannel = MockFLauncherChannel();
-      when(fLauncherChannel.checkForGetContentAvailability()).thenAnswer((_) => Future.value(false));
-      final wallpaperService = WallpaperService(_MockImagePicker(), fLauncherChannel, MockUnsplashService());
+      when(fLauncherChannel.checkForGetContentAvailability())
+          .thenAnswer((_) => Future.value(false));
+      final wallpaperService = WallpaperService(
+          _MockImagePicker(), fLauncherChannel, MockUnsplashService());
       await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
-      expect(() async => await wallpaperService.pickWallpaper(), throwsA(isInstanceOf<NoFileExplorerException>()));
+      expect(() async => await wallpaperService.pickWallpaper(),
+          throwsA(isInstanceOf<NoFileExplorerException>()));
     });
   });
 
@@ -78,16 +86,20 @@ void main() {
       Uri.parse("http://localhost/raw.jpg"),
       Uri.parse("http://localhost/@author"),
     );
-    when(unsplashService.randomPhoto("test")).thenAnswer((_) => Future.value(photo));
-    when(unsplashService.downloadPhoto(photo)).thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
-    final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService)
-      ..settingsService = settingsService;
+    when(unsplashService.randomPhoto("test"))
+        .thenAnswer((_) => Future.value(photo));
+    when(unsplashService.downloadPhoto(photo))
+        .thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
+    final wallpaperService =
+        WallpaperService(imagePicker, fLauncherChannel, unsplashService)
+          ..settingsService = settingsService;
     await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
     await wallpaperService.randomFromUnsplash("test");
 
     verify(unsplashService.randomPhoto("test"));
-    verify(settingsService.setUnsplashAuthor('{"username":"John Doe","link":"http://localhost/@author"}'));
+    verify(settingsService.setUnsplashAuthor(
+        '{"username":"John Doe","link":"http://localhost/@author"}'));
     expect(wallpaperService.wallpaperBytes, [0x01]);
   });
 
@@ -102,8 +114,10 @@ void main() {
       Uri.parse("http://localhost/raw.jpg"),
       Uri.parse("http://localhost/@author"),
     );
-    when(unsplashService.searchPhotos("test")).thenAnswer((_) => Future.value([photo]));
-    final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService);
+    when(unsplashService.searchPhotos("test"))
+        .thenAnswer((_) => Future.value([photo]));
+    final wallpaperService =
+        WallpaperService(imagePicker, fLauncherChannel, unsplashService);
     await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
     final photos = await wallpaperService.searchFromUnsplash("test");
@@ -123,15 +137,18 @@ void main() {
       Uri.parse("http://localhost/raw.jpg"),
       Uri.parse("http://localhost/@author"),
     );
-    when(unsplashService.downloadPhoto(photo)).thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
-    final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService)
-      ..settingsService = settingsService;
+    when(unsplashService.downloadPhoto(photo))
+        .thenAnswer((_) => Future.value(Uint8List.fromList([0x01])));
+    final wallpaperService =
+        WallpaperService(imagePicker, fLauncherChannel, unsplashService)
+          ..settingsService = settingsService;
     await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
     await wallpaperService.setFromUnsplash(photo);
 
     verify(unsplashService.downloadPhoto(photo));
-    verify(settingsService.setUnsplashAuthor('{"username":"John Doe","link":"http://localhost/@author"}'));
+    verify(settingsService.setUnsplashAuthor(
+        '{"username":"John Doe","link":"http://localhost/@author"}'));
     expect(wallpaperService.wallpaperBytes, [0x01]);
   });
 
@@ -140,8 +157,9 @@ void main() {
     final fLauncherChannel = MockFLauncherChannel();
     final unsplashService = MockUnsplashService();
     final settingsService = MockSettingsService();
-    final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService)
-      ..settingsService = settingsService;
+    final wallpaperService =
+        WallpaperService(imagePicker, fLauncherChannel, unsplashService)
+          ..settingsService = settingsService;
     await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
     await wallpaperService.setGradient(FLauncherGradients.greatWhale);
@@ -158,8 +176,9 @@ void main() {
       final unsplashService = MockUnsplashService();
       final settingsService = MockSettingsService();
       when(settingsService.gradientUuid).thenReturn(null);
-      final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService)
-        ..settingsService = settingsService;
+      final wallpaperService =
+          WallpaperService(imagePicker, fLauncherChannel, unsplashService)
+            ..settingsService = settingsService;
       await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
       final gradient = wallpaperService.gradient;
@@ -172,9 +191,11 @@ void main() {
       final fLauncherChannel = MockFLauncherChannel();
       final unsplashService = MockUnsplashService();
       final settingsService = MockSettingsService();
-      when(settingsService.gradientUuid).thenReturn(FLauncherGradients.grassShampoo.uuid);
-      final wallpaperService = WallpaperService(imagePicker, fLauncherChannel, unsplashService)
-        ..settingsService = settingsService;
+      when(settingsService.gradientUuid)
+          .thenReturn(FLauncherGradients.grassShampoo.uuid);
+      final wallpaperService =
+          WallpaperService(imagePicker, fLauncherChannel, unsplashService)
+            ..settingsService = settingsService;
       await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
 
       final gradient = wallpaperService.gradient;
@@ -209,12 +230,16 @@ class _MockImagePicker extends Mock implements ImagePicker {
 // ignore: must_be_immutable
 class _MockXFile extends Mock implements XFile {
   @override
-  Future<Uint8List> readAsBytes() => super
-      .noSuchMethod(Invocation.method(#readAsBytes, []), returnValue: Future<Uint8List>.value(Uint8List.fromList([])));
+  Future<Uint8List> readAsBytes() =>
+      super.noSuchMethod(Invocation.method(#readAsBytes, []),
+          returnValue: Future<Uint8List>.value(Uint8List.fromList([])));
 }
 
-class _MockPathProviderPlatform extends Mock with MockPlatformInterfaceMixin implements PathProviderPlatform {
+class _MockPathProviderPlatform extends Mock
+    with MockPlatformInterfaceMixin
+    implements PathProviderPlatform {
   @override
   Future<String?> getApplicationDocumentsPath() =>
-      super.noSuchMethod(Invocation.method(#getApplicationDocumentsPath, []), returnValue: Future<String?>.value());
+      super.noSuchMethod(Invocation.method(#getApplicationDocumentsPath, []),
+          returnValue: Future<String?>.value());
 }

@@ -29,7 +29,8 @@ class AddToCategoryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Selector<AppsService, List<Category>>(
         selector: (_, appsService) => appsService.categoriesWithApps
-            .where((element) => !element.applications.any((app) => app.packageName == application.packageName))
+            .where((element) => !element.applications
+                .any((app) => app.packageName == application.packageName))
             .map((categoryWithApps) => categoryWithApps.category)
             .toList(),
         builder: (context, categories, _) => SimpleDialog(
@@ -41,7 +42,9 @@ class AddToCategoryDialog extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     onTap: () async {
-                      await context.read<AppsService>().addToCategory(application, category);
+                      await context
+                          .read<AppsService>()
+                          .addToCategory(application, category);
                       Navigator.of(context).pop();
                     },
                     title: Text(category.name),

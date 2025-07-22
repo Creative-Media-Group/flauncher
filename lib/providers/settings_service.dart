@@ -39,19 +39,25 @@ class SettingsService extends ChangeNotifier {
   final FirebaseRemoteConfig _firebaseRemoteConfig;
   late final Timer _remoteConfigRefreshTimer;
 
-  bool get crashReportsEnabled => _sharedPreferences.getBool(_crashReportsEnabledKey) ?? true;
+  bool get crashReportsEnabled =>
+      _sharedPreferences.getBool(_crashReportsEnabledKey) ?? true;
 
-  bool get analyticsEnabled => _sharedPreferences.getBool(_analyticsEnabledKey) ?? true;
+  bool get analyticsEnabled =>
+      _sharedPreferences.getBool(_analyticsEnabledKey) ?? true;
 
-  bool get use24HourTimeFormat => _sharedPreferences.getBool(_use24HourTimeFormatKey) ?? true;
+  bool get use24HourTimeFormat =>
+      _sharedPreferences.getBool(_use24HourTimeFormatKey) ?? true;
 
-  bool get appHighlightAnimationEnabled => _sharedPreferences.getBool(_appHighlightAnimationEnabledKey) ?? true;
+  bool get appHighlightAnimationEnabled =>
+      _sharedPreferences.getBool(_appHighlightAnimationEnabledKey) ?? true;
 
   String? get gradientUuid => _sharedPreferences.getString(_gradientUuidKey);
 
-  bool get unsplashEnabled => _firebaseRemoteConfig.getBool(_unsplashEnabledKey);
+  bool get unsplashEnabled =>
+      _firebaseRemoteConfig.getBool(_unsplashEnabledKey);
 
-  String? get unsplashAuthor => _sharedPreferences.getString(_unsplashAuthorKey);
+  String? get unsplashAuthor =>
+      _sharedPreferences.getString(_unsplashAuthorKey);
 
   SettingsService(
     this._sharedPreferences,
@@ -59,9 +65,12 @@ class SettingsService extends ChangeNotifier {
     this._firebaseAnalytics,
     this._firebaseRemoteConfig,
   ) {
-    _firebaseCrashlytics.setCrashlyticsCollectionEnabled(kReleaseMode && crashReportsEnabled);
-    _firebaseAnalytics.setAnalyticsCollectionEnabled(kReleaseMode && analyticsEnabled);
-    _remoteConfigRefreshTimer = Timer.periodic(Duration(hours: 6, minutes: 1), (_) => _refreshFirebaseRemoteConfig());
+    _firebaseCrashlytics
+        .setCrashlyticsCollectionEnabled(kReleaseMode && crashReportsEnabled);
+    _firebaseAnalytics
+        .setAnalyticsCollectionEnabled(kReleaseMode && analyticsEnabled);
+    _remoteConfigRefreshTimer = Timer.periodic(
+        Duration(hours: 6, minutes: 1), (_) => _refreshFirebaseRemoteConfig());
   }
 
   @override

@@ -81,24 +81,33 @@ class ApplicationInfoPanel extends StatelessWidget {
                   children: [
                     Icon(Icons.open_with),
                     Container(width: 8),
-                    Text("Reorder", style: Theme.of(context).textTheme.bodyMedium),
+                    Text("Reorder",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ],
                 ),
-                onPressed: () => Navigator.of(context).pop(ApplicationInfoPanelResult.reorderApp),
+                onPressed: () => Navigator.of(context)
+                    .pop(ApplicationInfoPanelResult.reorderApp),
               ),
             TextButton(
               child: Row(
                 children: [
-                  Icon(application.hidden ? Icons.visibility : Icons.visibility_off_outlined),
+                  Icon(application.hidden
+                      ? Icons.visibility
+                      : Icons.visibility_off_outlined),
                   Container(width: 8),
-                  Text(application.hidden ? "Unhide" : "Hide", style: Theme.of(context).textTheme.bodyMedium),
+                  Text(application.hidden ? "Unhide" : "Hide",
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
               onPressed: () async {
                 if (application.hidden) {
-                  await context.read<AppsService>().unHideApplication(application);
+                  await context
+                      .read<AppsService>()
+                      .unHideApplication(application);
                 } else {
-                  await context.read<AppsService>().hideApplication(application);
+                  await context
+                      .read<AppsService>()
+                      .hideApplication(application);
                 }
                 Navigator.of(context).pop(ApplicationInfoPanelResult.none);
               },
@@ -120,7 +129,9 @@ class ApplicationInfoPanel extends StatelessWidget {
                   ],
                 ),
                 onPressed: () async {
-                  await context.read<AppsService>().removeFromCategory(application, category!);
+                  await context
+                      .read<AppsService>()
+                      .removeFromCategory(application, category!);
                   Navigator.of(context).pop(ApplicationInfoPanelResult.none);
                 },
               ),
@@ -130,17 +141,20 @@ class ApplicationInfoPanel extends StatelessWidget {
                 children: [
                   Icon(Icons.info_outlined),
                   Container(width: 8),
-                  Text("App info", style: Theme.of(context).textTheme.bodyMedium),
+                  Text("App info",
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
-              onPressed: () => context.read<AppsService>().openAppInfo(application),
+              onPressed: () =>
+                  context.read<AppsService>().openAppInfo(application),
             ),
             TextButton(
               child: Row(
                 children: [
                   Icon(Icons.delete_outlined),
                   Container(width: 8),
-                  Text("Uninstall", style: Theme.of(context).textTheme.bodyMedium),
+                  Text("Uninstall",
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
               onPressed: () async {

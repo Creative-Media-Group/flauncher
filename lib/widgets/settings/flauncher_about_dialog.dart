@@ -43,10 +43,13 @@ class FLauncherAboutDialog extends StatelessWidget {
             style: textStyle,
             children: [
               TextSpan(
-                text: "FLauncher is an open-source alternative launcher for Android TV.\n"
+                text:
+                    "FLauncher is an open-source alternative launcher for Android TV.\n"
                     "Source code available at ",
               ),
-              TextSpan(text: "https://gitlab.com/etiennf01/flauncher", style: underlined),
+              TextSpan(
+                  text: "https://gitlab.com/etiennf01/flauncher",
+                  style: underlined),
               TextSpan(text: ".\n\n"),
               TextSpan(text: "Logo by Katie "),
               TextSpan(text: "@fureturoe", style: underlined),

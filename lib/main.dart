@@ -42,10 +42,11 @@ Future<void> main() async {
   final firebaseCrashlytics = FirebaseCrashlytics.instance;
 
   FlutterError.onError = firebaseCrashlytics.recordFlutterError;
-  Isolate.current.addErrorListener(RawReceivePort((List<dynamic> pair) async => await firebaseCrashlytics.recordError(
-        pair.first,
-        pair.last as StackTrace,
-      )).sendPort);
+  Isolate.current.addErrorListener(RawReceivePort(
+      (List<dynamic> pair) async => await firebaseCrashlytics.recordError(
+            pair.first,
+            pair.last as StackTrace,
+          )).sendPort);
 
   runZonedGuarded<void>(() async {
     final firebaseAnalytics = FirebaseAnalytics.instance;
@@ -82,7 +83,11 @@ Future<void> main() async {
 
 Future<FirebaseRemoteConfig> _initFirebaseRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  await remoteConfig.setDefaults({"unsplash_enabled": false, "unsplash_access_key": "", "unsplash_secret_key": ""});
+  await remoteConfig.setDefaults({
+    "unsplash_enabled": false,
+    "unsplash_access_key": "",
+    "unsplash_secret_key": ""
+  });
   await remoteConfig.setConfigSettings(
     RemoteConfigSettings(
       fetchTimeout: Duration(minutes: 1),

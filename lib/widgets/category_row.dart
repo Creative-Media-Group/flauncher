@@ -42,10 +42,13 @@ class CategoryRow extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16, bottom: 8),
             child: Text(category.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(shadows: [Shadow(color: Colors.black54, offset: Offset(1, 1), blurRadius: 8)])),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    shadows: [
+                      Shadow(
+                          color: Colors.black54,
+                          offset: Offset(1, 1),
+                          blurRadius: 8)
+                    ])),
           ),
           applications.isNotEmpty
               ? SizedBox(
@@ -55,7 +58,8 @@ class CategoryRow extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     childrenDelegate: SliverChildBuilderDelegate(
                       (context, index) => EnsureVisible(
-                        key: Key("${category.id}-${applications[index].packageName}"),
+                        key: Key(
+                            "${category.id}-${applications[index].packageName}"),
                         alignment: 0.1,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),
@@ -63,7 +67,8 @@ class CategoryRow extends StatelessWidget {
                             category: category,
                             application: applications[index],
                             autofocus: index == 0,
-                            onMove: (direction) => _onMove(context, direction, index),
+                            onMove: (direction) =>
+                                _onMove(context, direction, index),
                             onMoveEnd: () => _onMoveEnd(context),
                           ),
                         ),
@@ -77,8 +82,8 @@ class CategoryRow extends StatelessWidget {
         ],
       );
 
-  int _findChildIndex(Key key) =>
-      applications.indexWhere((app) => "${category.id}-${app.packageName}" == (key as ValueKey<String>).value);
+  int _findChildIndex(Key key) => applications.indexWhere((app) =>
+      "${category.id}-${app.packageName}" == (key as ValueKey<String>).value);
 
   Widget _emptyState(BuildContext context) => SizedBox(
         height: 110,
@@ -92,11 +97,13 @@ class CategoryRow extends StatelessWidget {
                 aspectRatio: 16 / 9,
                 child: Card(
                   clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                   child: InkWell(
                     onTap: () => showDialog(
                       context: context,
-                      builder: (_) => SettingsPanel(initialRoute: CategoriesPanelPage.routeName),
+                      builder: (_) => SettingsPanel(
+                          initialRoute: CategoriesPanelPage.routeName),
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(8),

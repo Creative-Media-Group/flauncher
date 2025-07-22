@@ -45,10 +45,10 @@ class AppsGrid extends StatelessWidget {
             padding: EdgeInsets.only(left: 16),
             child: Text(
               category.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(shadows: [Shadow(color: Colors.black54, offset: Offset(1, 1), blurRadius: 8)]),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(shadows: [
+                Shadow(
+                    color: Colors.black54, offset: Offset(1, 1), blurRadius: 8)
+              ]),
             ),
           ),
           applications.isNotEmpty
@@ -59,13 +59,15 @@ class AppsGrid extends StatelessWidget {
                   padding: EdgeInsets.all(16),
                   childrenDelegate: SliverChildBuilderDelegate(
                     (context, index) => EnsureVisible(
-                      key: Key("${category.id}-${applications[index].packageName}"),
+                      key: Key(
+                          "${category.id}-${applications[index].packageName}"),
                       alignment: 0.5,
                       child: AppCard(
                         category: category,
                         application: applications[index],
                         autofocus: index == 0,
-                        onMove: (direction) => _onMove(context, direction, index),
+                        onMove: (direction) =>
+                            _onMove(context, direction, index),
                         onMoveEnd: () => _saveOrder(context),
                       ),
                     ),
@@ -77,12 +79,13 @@ class AppsGrid extends StatelessWidget {
         ],
       );
 
-  int _findChildIndex(Key key) =>
-      applications.indexWhere((app) => "${category.id}-${app.packageName}" == (key as ValueKey<String>).value);
+  int _findChildIndex(Key key) => applications.indexWhere((app) =>
+      "${category.id}-${app.packageName}" == (key as ValueKey<String>).value);
 
   void _onMove(BuildContext context, AxisDirection direction, int index) {
     final currentRow = (index / category.columnsCount).floor();
-    final totalRows = ((applications.length - 1) / category.columnsCount).floor();
+    final totalRows =
+        ((applications.length - 1) / category.columnsCount).floor();
 
     int? newIndex;
     switch (direction) {
@@ -98,7 +101,8 @@ class AppsGrid extends StatelessWidget {
         break;
       case AxisDirection.down:
         if (currentRow < totalRows) {
-          newIndex = min(index + category.columnsCount, applications.length - 1);
+          newIndex =
+              min(index + category.columnsCount, applications.length - 1);
         }
         break;
       case AxisDirection.left:
@@ -118,7 +122,8 @@ class AppsGrid extends StatelessWidget {
     appsService.saveOrderInCategory(category);
   }
 
-  SliverGridDelegate _buildSliverGridDelegate() => SliverGridDelegateWithFixedCrossAxisCount(
+  SliverGridDelegate _buildSliverGridDelegate() =>
+      SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: category.columnsCount,
         childAspectRatio: 16 / 9,
         mainAxisSpacing: 16,
@@ -139,11 +144,13 @@ class AppsGrid extends StatelessWidget {
                   aspectRatio: 16 / 9,
                   child: Card(
                     clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     child: InkWell(
                       onTap: () => showDialog(
                         context: context,
-                        builder: (_) => SettingsPanel(initialRoute: CategoriesPanelPage.routeName),
+                        builder: (_) => SettingsPanel(
+                            initialRoute: CategoriesPanelPage.routeName),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(8),

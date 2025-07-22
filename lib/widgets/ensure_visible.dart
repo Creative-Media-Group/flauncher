@@ -22,7 +22,8 @@ class EnsureVisible extends StatelessWidget {
   final Widget child;
   final double alignment;
 
-  EnsureVisible({Key? key, required this.child, this.alignment = 0.0}) : super(key: key);
+  EnsureVisible({Key? key, required this.child, this.alignment = 0.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) => Focus(

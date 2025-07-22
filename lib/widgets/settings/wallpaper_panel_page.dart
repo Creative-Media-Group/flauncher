@@ -41,10 +41,12 @@ class WallpaperPanelPage extends StatelessWidget {
                 children: [
                   ImageIcon(AssetImage("assets/unsplash.png")),
                   Container(width: 8),
-                  Text("Unsplash", style: Theme.of(context).textTheme.bodyMedium),
+                  Text("Unsplash",
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
-              onPressed: () => Navigator.of(context).pushNamed(UnsplashPanelPage.routeName),
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(UnsplashPanelPage.routeName),
             ),
           TextButton(
             autofocus: !context.read<SettingsService>().unsplashEnabled,
@@ -55,7 +57,8 @@ class WallpaperPanelPage extends StatelessWidget {
                 Text("Gradient", style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
-            onPressed: () => Navigator.of(context).pushNamed(GradientPanelPage.routeName),
+            onPressed: () =>
+                Navigator.of(context).pushNamed(GradientPanelPage.routeName),
           ),
           TextButton(
             child: Row(
@@ -76,7 +79,8 @@ class WallpaperPanelPage extends StatelessWidget {
                       children: [
                         Icon(Icons.error_outline, color: Colors.red),
                         SizedBox(width: 8),
-                        Text("Please install a file explorer in order to pick an image.")
+                        Text(
+                            "Please install a file explorer in order to pick an image.")
                       ],
                     ),
                   ),
@@ -91,10 +95,12 @@ class WallpaperPanelPage extends StatelessWidget {
               if (json != null) {
                 final authorInfo = jsonDecode(json);
                 return TextButton(
-                  onPressed: () => Navigator.of(context, rootNavigator: true).push(
+                  onPressed: () =>
+                      Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
                       builder: (context) => WebViewWidget(
-                        controller: WebViewController()..loadRequest(Uri.parse(authorInfo["link"])),
+                        controller: WebViewController()
+                          ..loadRequest(Uri.parse(authorInfo["link"])),
                       ),
                     ),
                   ),
