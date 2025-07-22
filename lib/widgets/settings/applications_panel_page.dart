@@ -47,13 +47,19 @@ class _ApplicationsPanelPageState extends State<ApplicationsPanelPage> {
                 onTap: (index) {
                   switch (index) {
                     case 0:
-                      setState(() => {_title = "TV Applications"});
+                      setState(() {
+                        _title = "TV Applications";
+                      });
                       break;
                     case 1:
-                      setState(() => {_title = "Non-TV Applications"});
+                      setState(() {
+                        _title = "Non-TV Applications";
+                      });
                       break;
                     case 2:
-                      setState(() => {_title = "Hidden Applications"});
+                      setState(() {
+                        _title = "Hidden Applications";
+                      });
                       break;
                     default:
                       throw ArgumentError.value(index, "index");
@@ -67,7 +73,9 @@ class _ApplicationsPanelPageState extends State<ApplicationsPanelPage> {
               ),
             ),
             SizedBox(height: 8),
-            Expanded(child: TabBarView(children: [_TVTab(), _SideloadedTab(), _HiddenTab()])),
+            Expanded(
+                child: TabBarView(
+                    children: [_TVTab(), _SideloadedTab(), _HiddenTab()])),
           ],
         ),
       );
@@ -76,10 +84,13 @@ class _ApplicationsPanelPageState extends State<ApplicationsPanelPage> {
 class _TVTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Selector<AppsService, List<App>>(
-        selector: (_, appsService) => appsService.applications.where((app) => !app.sideloaded && !app.hidden).toList(),
+        selector: (_, appsService) => appsService.applications
+            .where((app) => !app.sideloaded && !app.hidden)
+            .toList(),
         builder: (context, applications, _) => ListView(
           children: applications
-              .map((application) => EnsureVisible(alignment: 0.5, child: _appCard(context, application)))
+              .map((application) => EnsureVisible(
+                  alignment: 0.5, child: _appCard(context, application)))
               .toList(),
         ),
       );
@@ -88,10 +99,13 @@ class _TVTab extends StatelessWidget {
 class _SideloadedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Selector<AppsService, List<App>>(
-        selector: (_, appsService) => appsService.applications.where((app) => app.sideloaded && !app.hidden).toList(),
+        selector: (_, appsService) => appsService.applications
+            .where((app) => app.sideloaded && !app.hidden)
+            .toList(),
         builder: (context, applications, _) => ListView(
           children: applications
-              .map((application) => EnsureVisible(alignment: 0.5, child: _appCard(context, application)))
+              .map((application) => EnsureVisible(
+                  alignment: 0.5, child: _appCard(context, application)))
               .toList(),
         ),
       );
@@ -100,10 +114,12 @@ class _SideloadedTab extends StatelessWidget {
 class _HiddenTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Selector<AppsService, List<App>>(
-        selector: (_, appsService) => appsService.applications.where((app) => app.hidden).toList(),
+        selector: (_, appsService) =>
+            appsService.applications.where((app) => app.hidden).toList(),
         builder: (context, applications, _) => ListView(
           children: applications
-              .map((application) => EnsureVisible(alignment: 0.5, child: _appCard(context, application)))
+              .map((application) => EnsureVisible(
+                  alignment: 0.5, child: _appCard(context, application)))
               .toList(),
         ),
       );
