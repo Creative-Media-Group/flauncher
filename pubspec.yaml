@@ -25,6 +25,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.13
   unsplash_client: ^3.0.0
   webview_flutter: ^4.0.5
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
